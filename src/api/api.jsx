@@ -7,7 +7,9 @@ export default async function getEmployeeData(){
         const response = await axios.get(EndPoint);
         return response.data;
     } catch (error) {
+        
         console.error("Error fetching employee data:", error);
         alert("failed to fetch data");
+        return [];
     }
 }
