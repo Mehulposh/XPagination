@@ -8,6 +8,6 @@ export default async function getEmployeeData(){
         return response.data;
     } catch (error) {
         console.error("Error fetching employee data:", error);
-       
+        window.alert("failed to fetch data");
     }
 }

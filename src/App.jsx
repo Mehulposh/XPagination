@@ -7,7 +7,7 @@ const pageSize = 10;
 function App() {
   const [employeeData , setEmployeeData] = useState([]);
   const [currPage, setCurrPage] = useState(1);
-  const totalPages = Math.ceil(employeeData.length / pageSize);
+  const totalPages = employeeData.length ? Math.ceil(employeeData.length / pageSize) : 1;
   const startIndex = (currPage-1) * pageSize;
   const endIndex = startIndex + pageSize;
   const currList = employeeData.slice(startIndex, endIndex);
