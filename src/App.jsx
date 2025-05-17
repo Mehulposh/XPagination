@@ -32,7 +32,7 @@ function App() {
         setEmployeeData(data);
       } catch (error) {
         console.error("Error fetching employee data:", error);
-        alert("failed to fetch data");
+        
       }
     };
     fetchData();
