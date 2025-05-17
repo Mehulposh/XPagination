@@ -67,7 +67,7 @@ function App() {
       <div className="pagination-controls">
         <button
           onClick={handlePrev}
-          disabled={currPage === 1}
+          
           className="pagination-btn"
         >
           Previous
@@ -75,7 +75,7 @@ function App() {
         <span className="pagination-btn">{currPage}</span>
         <button
           onClick={handleNext}
-          disabled={currPage === totalPages}
+          
           className="pagination-btn"
         >
           Next
