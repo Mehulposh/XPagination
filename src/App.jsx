@@ -1,35 +1,88 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, {useEffect, useState } from "react";
+import "./App.css";
+import getEmployeeData  from "./api/api";
+
+const pageSize = 10;
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [employeeData , setEmployeeData] = useState([]);
+  const [currPage, setCurrPage] = useState(1);
+  const totalPages = Math.ceil(employeeData.length / pageSize);
+  const startIndex = (currPage-1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const currList = employeeData.slice(startIndex, endIndex);
+
+  const handlePrev = () => {
+    if(currPage > 1) {
+      setCurrPage((prev)=>  prev-1);
+    }
+  };
+
+  const handleNext = () => {
+    if(currPage < totalPages) {
+      setCurrPage((prev)=> prev+1);
+    }
+  };
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getEmployeeData();
+        setEmployeeData(data);
+      } catch (error) {
+        console.error("Error fetching employee data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="App">
+      <h1 className="header">Employee Data Table</h1>
+      <table className="employee-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currList.map((employee) => {
+            return (
+              <tr key={employee.id}>
+                <td>{employee.id}</td>
+                <td>{employee.name}</td>
+                <td>{employee.email}</td>
+                <td>{employee.role}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      
+      <div className="pagination-controls">
+        <button
+          onClick={handlePrev}
+          disabled={currPage === 1}
+          className="pagination-btn"
+        >
+          Previous
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        <span className="pagination-btn">{currPage}</span>
+        <button
+          onClick={handleNext}
+          disabled={currPage === totalPages}
+          className="pagination-btn"
+        >
+          Next
+        </button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 
-export default App
+export default App;
